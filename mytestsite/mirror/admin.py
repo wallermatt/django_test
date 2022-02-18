@@ -17,9 +17,9 @@ class VerificationAdmin(admin.ModelAdmin):
     def get_document(self, obj):
         try:
             doc = Document.objects.get(verification_id=obj.id)
+            return datetime.datetime.fromtimestamp(doc.created_at)
         except Document.DoesNotExist:
-            doc = None
-        return datetime.datetime.fromtimestamp(doc.created_at)
+            return None
 
     @admin.display(ordering='created_at', description='created_at')
     def conv_created_at(self, obj):

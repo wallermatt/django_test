@@ -80,8 +80,8 @@ DATABASES = {
         'NAME': 'mirror',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': 'host.docker.internal',
-        'PORT': '5432',
+        'HOST': 'localhost',
+        'PORT': '54321',
     }
 }
 
