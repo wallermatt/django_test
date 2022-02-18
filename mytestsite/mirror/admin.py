@@ -8,13 +8,6 @@ from .models import Document, Organization, Verification
 class VerificationAdmin(admin.ModelAdmin):
     list_display = ("id", "organization", "client", "status_v2", "conv_created_at", "conv_updated_at", "get_document")
     list_filter = ("organization", "client")
-    fieldsets = "extra_fieldsets"
-
-    def extra_fieldsets(self):
-        self.fieldsets = self.fieldsets + (
-            ('Extra Fields', {'fields': ('client',)}),
-        )
-        return self.fieldsets
     
     @admin.display(ordering='organization__display_name', description='org_name')
     def get_org(self, obj):
