@@ -1,12 +1,16 @@
 import datetime
 from django.apps import apps
 from django.contrib import admin
+from django.utils.html import format_html
+from django.urls import reverse
+
 from .models import Document, Organization, Verification
 
 
 @admin.register(Verification)
 class VerificationAdmin(admin.ModelAdmin):
     list_display = ("id", "organization", "client", "status_v2", "conv_created_at", "conv_updated_at", "get_document")
+    list_display_links = ("organization", "client")
     list_filter = ("organization", "client")
     
     @admin.display(ordering='organization__display_name', description='org_name')
@@ -16,8 +20,9 @@ class VerificationAdmin(admin.ModelAdmin):
     @admin.display(ordering='id', description='document')
     def get_document(self, obj):
         try:
-            doc = Document.objects.get(verification_id=obj.id)
-            return datetime.datetime.fromtimestamp(doc.created_at)
+            doc = Document.objects.filter(verification_id=obj.id)
+            url = reverse('admin:{}_{}_changelist'.format(obj._meta.app_label, "document"))
+            return format_html("<a href='{}?verification__id__exact={}'>{}</a>", url, obj.id, doc.count())
         except Document.DoesNotExist:
             return None
 

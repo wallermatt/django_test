@@ -127,7 +127,7 @@ class Client(models.Model):
     updated_at = models.BigIntegerField()
 
     def __str__(self):
-        return "{}-{}".format(self.id, self.email)
+        return "{}".format(self.email)
 
     class Meta:
         managed = False
@@ -322,7 +322,7 @@ class Organization(models.Model):
     updated_at = models.BigIntegerField()
 
     def __str__(self):
-        return "{}-{}".format(self.id, self.display_name)
+        return "{}".format(self.display_name)
 
     class Meta:
         managed = False
