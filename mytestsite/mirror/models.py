@@ -5,6 +5,8 @@
 #   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
+import datetime
+
 from django.db import models
 
 
@@ -231,6 +233,13 @@ class Document(models.Model):
     deleted_at = models.BigIntegerField(blank=True, null=True)
     status_v2 = models.TextField(blank=True, null=True)  # This field type is a guess.
 
+    def __str__(self):
+        return "{}-{}-{}".format(
+            self.verification.organization.display_name,
+            self.verification.client.email,
+            datetime.datetime.fromtimestamp(self.created_at)
+        )
+
     class Meta:
         managed = False
         db_table = 'document'
@@ -357,6 +366,13 @@ class Verification(models.Model):
     updated_at = models.BigIntegerField()
     status_v2 = models.TextField(blank=True, null=True)  # This field type is a guess.
     deleted_at = models.BigIntegerField(blank=True, null=True)
+
+    def __str__(self):
+        return "{}-{}-{}".format(
+            self.organization.display_name,
+            self.client.email,
+            datetime.datetime.fromtimestamp(self.created_at)
+        )
 
     class Meta:
         managed = False
