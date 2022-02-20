@@ -5,17 +5,15 @@
 #   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
-import datetime
-
 from django.db import models
 
 
 class Account(models.Model):
-    id = models.CharField(primary_key=True, max_length=99)
+    id = models.CharField(primary_key=True, max_length=-1)
     created_at = models.BigIntegerField()
     first_time = models.BooleanField(blank=True, null=True)
     last_login_at = models.BigIntegerField()
-    password = models.CharField(max_length=99)
+    password = models.CharField(max_length=-1)
     updated_at = models.BigIntegerField()
 
     class Meta:
@@ -35,10 +33,10 @@ class AccountClientOrganization(models.Model):
 
 
 class AccountEmail(models.Model):
-    id = models.CharField(primary_key=True, max_length=99)
+    id = models.CharField(primary_key=True, max_length=-1)
     account = models.ForeignKey(Account, models.DO_NOTHING)
     created_at = models.BigIntegerField()
-    email = models.CharField(unique=True, max_length=99)
+    email = models.CharField(unique=True, max_length=-1)
     status = models.SmallIntegerField()
     updated_at = models.BigIntegerField()
     verified = models.BooleanField(blank=True, null=True)
@@ -60,11 +58,11 @@ class AccountOrganizationRole(models.Model):
 
 
 class AccountProfile(models.Model):
-    id = models.CharField(primary_key=True, max_length=99)
+    id = models.CharField(primary_key=True, max_length=-1)
     account = models.ForeignKey(Account, models.DO_NOTHING)
     avatar = models.TextField(blank=True, null=True)
-    full_name = models.CharField(max_length=99)
-    phones = models.CharField(max_length=99, blank=True, null=True)
+    full_name = models.CharField(max_length=-1)
+    phones = models.CharField(max_length=-1, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -72,12 +70,12 @@ class AccountProfile(models.Model):
 
 
 class AmlPassbase(models.Model):
-    id = models.CharField(primary_key=True, max_length=99)
+    id = models.CharField(primary_key=True, max_length=-1)
     verification = models.ForeignKey('Verification', models.DO_NOTHING)
     aml_response = models.TextField(blank=True, null=True)
     created_at = models.BigIntegerField()
     status = models.SmallIntegerField()
-    status_by = models.CharField(max_length=99, blank=True, null=True)
+    status_by = models.CharField(max_length=-1, blank=True, null=True)
     updated_at = models.BigIntegerField()
     manually_approved = models.BooleanField(blank=True, null=True)
     deleted_at = models.BigIntegerField(blank=True, null=True)
@@ -89,14 +87,14 @@ class AmlPassbase(models.Model):
 
 
 class AmlSmartsearch(models.Model):
-    id = models.CharField(primary_key=True, max_length=99)
+    id = models.CharField(primary_key=True, max_length=-1)
     verification = models.ForeignKey('Verification', models.DO_NOTHING)
     aml_error_response = models.TextField(blank=True, null=True)
     aml_individual_uk_response = models.TextField(blank=True, null=True)
     completed = models.SmallIntegerField()
     created_at = models.BigIntegerField()
     status = models.SmallIntegerField()
-    status_by = models.CharField(max_length=99, blank=True, null=True)
+    status_by = models.CharField(max_length=-1, blank=True, null=True)
     updated_at = models.BigIntegerField()
     manually_approved = models.BooleanField(blank=True, null=True)
     deleted_at = models.BigIntegerField(blank=True, null=True)
@@ -110,8 +108,8 @@ class AuditLog(models.Model):
     created_at = models.BigIntegerField()
     new_data = models.JSONField(blank=True, null=True)
     old_data = models.JSONField(blank=True, null=True)
-    statement = models.CharField(max_length=99)
-    table_name = models.CharField(max_length=99)
+    statement = models.CharField(max_length=-1)
+    table_name = models.CharField(max_length=-1)
 
     class Meta:
         managed = False
@@ -119,17 +117,14 @@ class AuditLog(models.Model):
 
 
 class Client(models.Model):
-    id = models.CharField(primary_key=True, max_length=99)
+    id = models.CharField(primary_key=True, max_length=-1)
     created_at = models.BigIntegerField()
-    email = models.CharField(unique=True, max_length=99)
+    email = models.CharField(unique=True, max_length=-1)
     last_login_at = models.BigIntegerField()
-    password = models.CharField(max_length=99, blank=True, null=True)
-    registration_code = models.CharField(max_length=99, blank=True, null=True)
+    password = models.CharField(max_length=-1, blank=True, null=True)
+    registration_code = models.CharField(max_length=-1, blank=True, null=True)
     self_verified = models.BooleanField(blank=True, null=True)
     updated_at = models.BigIntegerField()
-
-    def __str__(self):
-        return "{}".format(self.email)
 
     class Meta:
         managed = False
@@ -139,7 +134,7 @@ class Client(models.Model):
 class ClientCompany(models.Model):
     client = models.OneToOneField(Client, models.DO_NOTHING, primary_key=True)
     company = models.ForeignKey('Company', models.DO_NOTHING)
-    position = models.CharField(max_length=99)
+    position = models.CharField(max_length=-1)
 
     class Meta:
         managed = False
@@ -148,10 +143,10 @@ class ClientCompany(models.Model):
 
 
 class ClientProfile(models.Model):
-    id = models.CharField(primary_key=True, max_length=99)
+    id = models.CharField(primary_key=True, max_length=-1)
     client = models.OneToOneField(Client, models.DO_NOTHING)
-    full_name = models.CharField(max_length=99)
-    phones = models.CharField(max_length=99, blank=True, null=True)
+    full_name = models.CharField(max_length=-1)
+    phones = models.CharField(max_length=-1, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -159,10 +154,10 @@ class ClientProfile(models.Model):
 
 
 class Company(models.Model):
-    id = models.CharField(primary_key=True, max_length=99)
+    id = models.CharField(primary_key=True, max_length=-1)
     created_at = models.BigIntegerField()
-    display_name = models.CharField(max_length=99)
-    registration_number = models.CharField(max_length=99, blank=True, null=True)
+    display_name = models.CharField(max_length=-1)
+    registration_number = models.CharField(max_length=-1, blank=True, null=True)
     updated_at = models.BigIntegerField()
 
     class Meta:
@@ -173,7 +168,7 @@ class Company(models.Model):
 class CompanyOrganization(models.Model):
     company = models.OneToOneField(Company, models.DO_NOTHING, primary_key=True)
     organization = models.ForeignKey('Organization', models.DO_NOTHING)
-    position = models.CharField(max_length=99)
+    position = models.CharField(max_length=-1)
 
     class Meta:
         managed = False
@@ -182,22 +177,22 @@ class CompanyOrganization(models.Model):
 
 
 class Customer(models.Model):
-    id = models.CharField(primary_key=True, max_length=99)
+    id = models.CharField(primary_key=True, max_length=-1)
     organization = models.ForeignKey('Organization', models.DO_NOTHING)
-    card_brand = models.CharField(max_length=99, blank=True, null=True)
-    client_secret = models.CharField(max_length=99, blank=True, null=True)
+    card_brand = models.CharField(max_length=-1, blank=True, null=True)
+    client_secret = models.CharField(max_length=-1, blank=True, null=True)
     created_at = models.BigIntegerField()
-    email = models.CharField(max_length=99)
+    email = models.CharField(max_length=-1)
     extended_aml_billing_period = models.BigIntegerField()
-    last4 = models.CharField(max_length=99, blank=True, null=True)
-    latest_invoice_id = models.CharField(max_length=99, blank=True, null=True)
-    payment_method_id = models.CharField(max_length=99, blank=True, null=True)
-    payment_status = models.CharField(max_length=99, blank=True, null=True)
-    plan = models.CharField(max_length=99, blank=True, null=True)
-    status = models.CharField(max_length=99, blank=True, null=True)
-    subscription_extended_aml_item_id = models.CharField(max_length=99, blank=True, null=True)
-    subscription_id = models.CharField(max_length=99, blank=True, null=True)
-    subscription_item_id = models.CharField(max_length=99, blank=True, null=True)
+    last4 = models.CharField(max_length=-1, blank=True, null=True)
+    latest_invoice_id = models.CharField(max_length=-1, blank=True, null=True)
+    payment_method_id = models.CharField(max_length=-1, blank=True, null=True)
+    payment_status = models.CharField(max_length=-1, blank=True, null=True)
+    plan = models.CharField(max_length=-1, blank=True, null=True)
+    status = models.CharField(max_length=-1, blank=True, null=True)
+    subscription_extended_aml_item_id = models.CharField(max_length=-1, blank=True, null=True)
+    subscription_id = models.CharField(max_length=-1, blank=True, null=True)
+    subscription_item_id = models.CharField(max_length=-1, blank=True, null=True)
     subscription_period_ends = models.BigIntegerField()
     updated_at = models.BigIntegerField()
     verifications_billing_period = models.BigIntegerField()
@@ -220,25 +215,18 @@ class CustomerDiscounts(models.Model):
 
 
 class Document(models.Model):
-    id = models.CharField(primary_key=True, max_length=99)
+    id = models.CharField(primary_key=True, max_length=-1)
     verification = models.ForeignKey('Verification', models.DO_NOTHING)
     completed = models.BooleanField(blank=True, null=True)
     created_at = models.BigIntegerField()
-    document_type = models.CharField(max_length=99)
+    document_type = models.CharField(max_length=-1)
     status = models.SmallIntegerField()
-    status_by = models.CharField(max_length=99, blank=True, null=True)
-    type_explanation = models.CharField(max_length=99, blank=True, null=True)
+    status_by = models.CharField(max_length=-1, blank=True, null=True)
+    type_explanation = models.CharField(max_length=-1, blank=True, null=True)
     updated_at = models.BigIntegerField()
     manually_approved = models.BooleanField(blank=True, null=True)
     deleted_at = models.BigIntegerField(blank=True, null=True)
     status_v2 = models.TextField(blank=True, null=True)  # This field type is a guess.
-
-    def __str__(self):
-        return "{}-{}-{}".format(
-            self.verification.organization.display_name,
-            self.verification.client.email,
-            datetime.datetime.fromtimestamp(self.created_at)
-        )
 
     class Meta:
         managed = False
@@ -246,18 +234,18 @@ class Document(models.Model):
 
 
 class DocumentData(models.Model):
-    id = models.CharField(primary_key=True, max_length=99)
+    id = models.CharField(primary_key=True, max_length=-1)
     document = models.ForeignKey(Document, models.DO_NOTHING)
     chain = models.TextField(blank=True, null=True)
     content_length = models.BigIntegerField(blank=True, null=True)
-    content_type = models.CharField(max_length=99, blank=True, null=True)
+    content_type = models.CharField(max_length=-1, blank=True, null=True)
     cookies = models.TextField(blank=True, null=True)
     created_at = models.BigIntegerField()
-    file_category = models.CharField(max_length=99, blank=True, null=True)
-    key = models.CharField(max_length=99, blank=True, null=True)
-    name = models.CharField(max_length=99, blank=True, null=True)
+    file_category = models.CharField(max_length=-1, blank=True, null=True)
+    key = models.CharField(max_length=-1, blank=True, null=True)
+    name = models.CharField(max_length=-1, blank=True, null=True)
     score = models.SmallIntegerField()
-    screenshot = models.CharField(max_length=99, blank=True, null=True)
+    screenshot = models.CharField(max_length=-1, blank=True, null=True)
     updated_at = models.BigIntegerField()
     url = models.TextField(blank=True, null=True)
     user_agent = models.TextField(blank=True, null=True)
@@ -269,12 +257,12 @@ class DocumentData(models.Model):
 
 
 class Idv(models.Model):
-    id = models.CharField(primary_key=True, max_length=99)
+    id = models.CharField(primary_key=True, max_length=-1)
     verification = models.ForeignKey('Verification', models.DO_NOTHING)
     completed = models.BooleanField(blank=True, null=True)
     created_at = models.BigIntegerField()
     status = models.SmallIntegerField()
-    status_by = models.CharField(max_length=99, blank=True, null=True)
+    status_by = models.CharField(max_length=-1, blank=True, null=True)
     updated_at = models.BigIntegerField()
     manually_approved = models.BooleanField(blank=True, null=True)
     deleted_at = models.BigIntegerField(blank=True, null=True)
@@ -286,7 +274,7 @@ class Idv(models.Model):
 
 
 class IdvData(models.Model):
-    id = models.CharField(primary_key=True, max_length=99)
+    id = models.CharField(primary_key=True, max_length=-1)
     idv = models.ForeignKey(Idv, models.DO_NOTHING)
     created_at = models.BigIntegerField()
     idv_key = models.TextField(blank=True, null=True)
@@ -301,10 +289,10 @@ class IdvData(models.Model):
 
 
 class Invitation(models.Model):
-    id = models.CharField(primary_key=True, max_length=99)
+    id = models.CharField(primary_key=True, max_length=-1)
     organization = models.ForeignKey('Organization', models.DO_NOTHING)
     created_at = models.BigIntegerField()
-    email = models.CharField(max_length=99)
+    email = models.CharField(max_length=-1)
     updated_at = models.BigIntegerField()
     status_v2 = models.TextField(blank=True, null=True)  # This field type is a guess.
 
@@ -315,7 +303,7 @@ class Invitation(models.Model):
 
 
 class InvitationLink(models.Model):
-    id = models.CharField(primary_key=True, max_length=99)
+    id = models.CharField(primary_key=True, max_length=-1)
     organization = models.OneToOneField('Organization', models.DO_NOTHING)
     created_at = models.BigIntegerField()
 
@@ -325,14 +313,11 @@ class InvitationLink(models.Model):
 
 
 class Organization(models.Model):
-    id = models.CharField(primary_key=True, max_length=99)
+    id = models.CharField(primary_key=True, max_length=-1)
     created_at = models.BigIntegerField()
-    display_name = models.CharField(max_length=99)
+    display_name = models.CharField(max_length=-1)
     logo = models.TextField(blank=True, null=True)
     updated_at = models.BigIntegerField()
-
-    def __str__(self):
-        return "{}".format(self.display_name)
 
     class Meta:
         managed = False
@@ -340,7 +325,7 @@ class Organization(models.Model):
 
 
 class Role(models.Model):
-    name = models.CharField(max_length=99)
+    name = models.CharField(max_length=-1)
 
     class Meta:
         managed = False
@@ -357,7 +342,7 @@ class SchemaMigrations(models.Model):
 
 
 class Verification(models.Model):
-    id = models.CharField(primary_key=True, max_length=99)
+    id = models.CharField(primary_key=True, max_length=-1)
     account = models.ForeignKey(Account, models.DO_NOTHING)
     client = models.ForeignKey(Client, models.DO_NOTHING)
     organization = models.ForeignKey(Organization, models.DO_NOTHING)
@@ -368,20 +353,13 @@ class Verification(models.Model):
     status_v2 = models.TextField(blank=True, null=True)  # This field type is a guess.
     deleted_at = models.BigIntegerField(blank=True, null=True)
 
-    def __str__(self):
-        return "{}-{}-{}".format(
-            self.organization.display_name,
-            self.client.email,
-            datetime.datetime.fromtimestamp(self.created_at)
-        )
-
     class Meta:
         managed = False
         db_table = 'verification'
 
 
 class VerificationReminder(models.Model):
-    id = models.CharField(primary_key=True, max_length=99)
+    id = models.CharField(primary_key=True, max_length=-1)
     verification = models.ForeignKey(Verification, models.DO_NOTHING)
     client = models.ForeignKey(Client, models.DO_NOTHING)
     created_at = models.BigIntegerField()
