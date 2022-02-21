@@ -8,7 +8,9 @@ RUN apt-get update && apt-get install -y vim && apt-get install -y python3-pip &
 
 RUN apt-get install -y iputils-ping && apt-get install -y curl && apt-get install -y telnet
 
-RUN pip3 install Django==4.0.2 && pip3 install psycopg2-binary==2.9.3
+RUN apt-get install -y libpq-dev
+
+RUN pip3 install Django && pip3 install psycopg2-binary
 
 RUN pip3 install tzdata
 
