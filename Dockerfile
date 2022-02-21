@@ -18,4 +18,7 @@ COPY . .
 
 WORKDIR /home/mytestsite/
 
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000", "--settings", "mytestsite.settings.docker"]
+ARG SETTINGS
+ENV envSettings=$SETTINGS
+
+CMD ["sh", "-c", "python3 manage.py runserver 0.0.0.0:8000 --settings ${envSettings}"]
