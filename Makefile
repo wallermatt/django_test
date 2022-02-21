@@ -16,3 +16,9 @@ staging-tunnel:
 
 stop-tunnels:
 	killall ssh
+
+run-local:
+	python3 manage.py runserver 0.0.0.0:8000 --settings mytestsite.settings.local
+
+run-staging:
+	python3 mytestsite/manage.py runserver 0.0.0.0:8000 --settings mytestsite.settings.staging
