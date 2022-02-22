@@ -9,7 +9,8 @@ from .models import Document, Organization, Verification, Idv, AmlPassbase, Docu
 
 class MirrorAdminSite(admin.AdminSite):
     site_header = 'Mirror Administration'
-
+    site_title = 'Mirror Admin'
+    enable_nav_sidebar = False
 
 def get_mirror_admin_site():
     admin_site = MirrorAdminSite(name='mirror_admin')
