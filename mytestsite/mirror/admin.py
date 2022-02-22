@@ -4,10 +4,33 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.urls import reverse
 
-from .models import Document, Organization, Verification, Idv, AmlPassbase, DocumentData, IdvData
+from .models import Document, Organization, Verification, Idv, AmlPassbase, DocumentData, IdvData, Client
 
 
-@admin.register(Verification)
+class MirrorAdminSite(admin.AdminSite):
+    site_header = 'Mirror Administration'
+
+
+def get_mirror_admin_site():
+    admin_site = MirrorAdminSite(name='mirror_admin')
+    admin_site.register(Verification, VerificationAdmin)
+    admin_site.register(Document, DocumentAdmin)
+    admin_site.register(DocumentData, DocumentDataAdmin)
+    admin_site.register(Idv, IdvAdmin)
+    admin_site.register(IdvData, IdvDataAdmin)
+    admin_site.register(AmlPassbase, AmlPassbaseAdmin)
+
+    models = apps.get_models()
+    for model in models:
+        try:
+            if 'mirror' in str(model):
+                admin_site.register(model)
+        except:
+            pass
+
+    return admin_site
+
+
 class VerificationAdmin(admin.ModelAdmin):
     list_display = ("id", "organization", "client", "status_v2", "conv_created_at", "conv_updated_at", "get_document", "get_idv", "get_aml_passbase")
     list_display_links = ("id",)
@@ -53,7 +76,6 @@ class VerificationAdmin(admin.ModelAdmin):
         return datetime.datetime.fromtimestamp(obj.updated_at)
 
 
-@admin.register(Document)
 class DocumentAdmin(admin.ModelAdmin):
     list_display = ("id", "verification", "status_v2", "conv_created_at", "conv_updated_at", "get_document_data")
     list_display_links = ("id",)
@@ -76,7 +98,6 @@ class DocumentAdmin(admin.ModelAdmin):
         return datetime.datetime.fromtimestamp(obj.updated_at)
 
 
-@admin.register(DocumentData)
 class DocumentDataAdmin(admin.ModelAdmin):
     list_display = ("get_id", "document", "conv_created_at", "conv_updated_at", "score")
 
@@ -94,7 +115,6 @@ class DocumentDataAdmin(admin.ModelAdmin):
         return datetime.datetime.fromtimestamp(obj.updated_at)
 
 
-@admin.register(AmlPassbase)
 class AmlPassbaseAdmin(admin.ModelAdmin):
     list_display = ("id", "verification", "conv_created_at", "conv_updated_at", "status_v2")
     list_display_links = ("id",)
@@ -108,7 +128,6 @@ class AmlPassbaseAdmin(admin.ModelAdmin):
         return datetime.datetime.fromtimestamp(obj.updated_at)
 
 
-@admin.register(Idv)
 class IdvAdmin(admin.ModelAdmin):
     list_display = ("id", "verification", "status_v2", "conv_created_at", "conv_updated_at", "get_idv_data")
     list_display_links = ("id",)
@@ -131,7 +150,6 @@ class IdvAdmin(admin.ModelAdmin):
         return datetime.datetime.fromtimestamp(obj.updated_at)
 
 
-@admin.register(IdvData)
 class IdvDataAdmin(admin.ModelAdmin):
     list_display = ("id", "idv", "conv_created_at", "conv_updated_at", "score")
     list_display_links = ("id",)
@@ -143,14 +161,3 @@ class IdvDataAdmin(admin.ModelAdmin):
     @admin.display(ordering='updated_at', description='updated_at')
     def conv_updated_at(self, obj):
         return datetime.datetime.fromtimestamp(obj.updated_at)
-
-
-# Register your models here.
-#admin.site.register(Organization)
-models = apps.get_models()
-for model in models:
-    try:
-        admin.site.register(model)
-    except admin.sites.AlreadyRegistered:
-        pass
-
