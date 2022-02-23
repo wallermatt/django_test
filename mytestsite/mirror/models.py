@@ -134,6 +134,7 @@ class Client(models.Model):
     class Meta:
         managed = False
         db_table = 'client'
+        ordering = ['email',]
 
 
 class ClientCompany(models.Model):
@@ -337,6 +338,7 @@ class Organization(models.Model):
     class Meta:
         managed = False
         db_table = 'organization'
+        ordering = ['display_name']
 
 
 class Role(models.Model):

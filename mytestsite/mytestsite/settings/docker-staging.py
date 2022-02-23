@@ -31,7 +31,8 @@ ALLOWED_HOSTS = ["0.0.0.0", "localhost"]
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    #'django.contrib.admin',
+    'mirror.apps.MirrorAdminConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
