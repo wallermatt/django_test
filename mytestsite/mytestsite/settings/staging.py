@@ -14,7 +14,6 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-print('****************', BASE_DIR)
 
 
 # Quick-start development settings - unsuitable for production
@@ -26,7 +25,13 @@ SECRET_KEY = 'django-insecure-3)-$vx*_3yv!_0$pzqt%yeq*+a2(=2mz1lf%$(ant=m*+8peho
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["0.0.0.0", "localhost"]
+ALLOWED_HOSTS = ["0.0.0.0", "localhost", "127.0.0.1"]
+
+INTERNAL_IPS = [
+    '0.0.0.0',
+    'localhost',
+    "127.0.0.1",
+]
 
 
 # Application definition
@@ -40,9 +45,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mirror.apps.MirrorConfig',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -128,3 +135,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+if DEBUG: 
+    import mimetypes 
+    mimetypes.add_type("application/javascript", ".js", True)
