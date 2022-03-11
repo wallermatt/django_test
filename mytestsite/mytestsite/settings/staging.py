@@ -37,7 +37,6 @@ INTERNAL_IPS = [
 # Application definition
 
 INSTALLED_APPS = [
-    #'django.contrib.admin',
     'mirror.apps.MirrorAdminConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -132,8 +131,6 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-print(STATIC_ROOT)
-print('****', STATIC_URL)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

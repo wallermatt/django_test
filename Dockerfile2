@@ -14,6 +14,8 @@ RUN pip3 install Django && pip3 install psycopg2-binary
 
 RUN pip3 install tzdata
 
+RUN pip3 install gunicorn
+
 WORKDIR /home/
 
 COPY . .
@@ -21,6 +23,6 @@ COPY . .
 WORKDIR /home/mytestsite/
 
 ARG ADMIN_ENV
-ENV envSettings=$SETTINGS
+ENV adminEnv=$ADMIN_ENV
 
-CMD ["sh", "-c", "python3 manage.py runserver 0.0.0.0:8000 --settings ${envSettings}"]
+CMD ["sh", "-c", "ADMIN_ENV=${adminEnv} gunicorn --bind 0.0.0.0:8000 mytestsite.wsgi"]
